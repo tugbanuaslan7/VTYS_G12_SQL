@@ -1,8 +1,10 @@
+use boardgame
+
 -- Fonksiyonun var olup olmadýðýný kontrol et
-IF OBJECT_ID ( 'EnÇokOynananUlke')
+IF OBJECT_ID ( 'fncEnÇokOynananUlke') IS NOT NULL
 	BEGIN
 		-- Fonksiyon varsa sil
-		DROP FUNCTION EnÇokOynananUlke;
+		DROP FUNCTION fncEnÇokOynananUlke;
 	END
 GO
 
@@ -10,7 +12,7 @@ GO
 -- Parametre olarak alýnan OyunId'ye baðlý olarak 'Koleksiyonlar' ve 'Kullanicilar' tablolarýndaki
 -- kullanýcýlarýn ülkelerini gruplar ve en fazla kullanýcýya sahip olan ülkeyi belirler.
 
-CREATE FUNCTION EnÇokOynananUlke(@OyunId INT)
+CREATE FUNCTION fncEnÇokOynananUlke(@OyunId INT)
 RETURNS VARCHAR(50)
 AS
 	BEGIN
@@ -21,14 +23,14 @@ AS
 		-- 'Kullanicilar' tablosuyla inner join yaparak, kullanýcýlarýn ülkelerine göre grupla
 		-- En çok sayýda kullanýcýya sahip olan ülkeyi seçer ve 'EnÇokOynananUlke' deðiþkenine ata
 		SELECT TOP 1 
-			u.Ulke = @EnÇokOynananUlke  -- Bu ülkeyi deðiþkene ata
+			@EnÇokOynananUlke = u.ULKE_ID   -- Bu ülkeyi deðiþkene ata
 		FROM 
-			Koleksiyonlar k
-		INNER JOIN Kullanicilar u ON k.KullaniciId = u.KullaniciId
+			tblKoleksiyon k
+		INNER JOIN tblUye u ON k.UYE_ID = u.UYE_ID
 		WHERE 
-			k.OyunId = @OyunId  -- Parametre olarak alýnan oyun ID'si ile filtreleme yapýlýr
+			k.OYUN_ID = @OyunId  -- Parametre olarak alýnan oyun ID'si ile filtreleme yapýlýr
 		GROUP BY 
-			u.Ulke  -- Ülkelere göre gruplanýr
+			u.ULKE_ID  -- Ülkelere göre gruplanýr
 		ORDER BY 
 			COUNT(*) DESC;  -- En fazla kullanýcýya sahip ülke önce gelir
 
@@ -39,4 +41,4 @@ GO
 
 
 -- OyunID'si 1 olan oyununun en çok hangi ülkede oynandýðýný bulan sorgu
-SELECT dbo.EnÇokOynananUlke(1) AS EnCokOynananUlke;
+SELECT dbo.fncEnÇokOynananUlke(1) AS EnCokOynananUlke;
