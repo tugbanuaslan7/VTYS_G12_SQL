@@ -49,5 +49,5 @@ INNER JOIN tbltasarimci t ON ot.TASARIMCI_ID = t.TASARIMCI_ID -- Tasarımcı bil
 WHERE 
     o.OyunTuru = 'Aksiyon'  -- Oyun türüne göre filtreleme
 ORDER BY 
-    ec.YasGrubu, ec.ToplamOyuncu DESC;
+    o.OyunAdi, ec.ToplamOyuncu DESC;
 
