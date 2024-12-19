@@ -12,6 +12,7 @@ GO
 CREATE VIEW viewEnÇokOynananUlke
 AS
 SELECT 
+	o.OYUN_ID,
     o.OYUN_ASILAD,
     COUNT(*) AS ToplamOyuncu,
     CASE 
@@ -25,6 +26,7 @@ FROM
 INNER JOIN tbloyun o ON k.OYUN_ID = o.OYUN_ID
 INNER JOIN tblUye u ON k.UYE_ID = u.UYE_ID
 GROUP BY 
+	o.OYUN_ID,
     o.OYUN_ASILAD,
     CASE 
         WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
@@ -36,34 +38,6 @@ GO
 
 
 
-
-------
-
-CREATE VIEW viewEnÇokOynananUlke
-AS
-SELECT 
-    o.OYUN_ASILAD,
-    COUNT(*) AS ToplamOyuncu,
-    CASE 
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 26 AND 35 THEN '26-35'
-        ELSE '35+'
-    END AS YasGrubu,
-    enCokUlke.EnCokOynananUlke
-FROM 
-    tblKoleksiyon k
-INNER JOIN tbloyun o ON k.OYUN_ID = o.OYUN_ID
-INNER JOIN tblUye u ON k.UYE_ID = u.UYE_ID
-CROSS APPLY (SELECT dbo.fncEnÇokOynananUlke(o.OYUN_ID) AS EnCokOynananUlke) enCokUlke
-GROUP BY 
-    o.OYUN_ASILAD,
-    CASE 
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 26 AND 35 THEN '26-35'
-        ELSE '35+'
-    END,
-    enCokUlke.EnCokOynananUlke;
-GO
 
 
 
@@ -85,45 +59,3 @@ WHERE
     otr.TUR_ID = 1  -- Oyun türüne göre filtreleme
 ORDER BY 
     o.OYUN_ASILAD, ec.ToplamOyuncu DESC;
-	
-
-
-
-
-
-
-
-
-CREATE VIEW viewEnÇokOynananUlke
-AS
-with encokoynanan as (
-select 
-Oyun_ıd,
-dbo.fncEnÇokOynananUlke(o.OYUN_ID) AS EnCokOynananUlke
-from tbloyun
-
-)
-SELECT 
-    o.OYUN_ASILAD,
-    COUNT(*) AS ToplamOyuncu,
-    CASE 
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 26 AND 35 THEN '26-35'
-        ELSE '35+'
-    END AS YasGrubu,
-	e.EnCokOynananUlke
-
-FROM 
-    tblKoleksiyon k
-INNER JOIN tbloyun o ON k.OYUN_ID = o.OYUN_ID
-INNER JOIN tblUye u ON k.UYE_ID = u.UYE_ID
-inner join encokoynanan e on o.OYUN_ID = e.OYUN_ID
-GROUP BY 
-    o.OYUN_ASILAD,
-    CASE 
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 26 AND 35 THEN '26-35'
-        ELSE '35+'
-    END;
-
-GO
