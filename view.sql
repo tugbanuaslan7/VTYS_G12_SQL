@@ -1,61 +1,58 @@
--- VIEW'ın var olup olmadığını kontrol et
-IF OBJECT_ID('viewEnÇokOynananUlke') IS NOT NULL
+
+-- View ın önceden var olup olmadığını kontrol ediyoruz 
+IF OBJECT_ID ( 'vw_UyeOyunAnaliz') IS NOT NULL
 	BEGIN
-	    -- bu isimde VIEW varsa sil
-		DROP VIEW viewEnÇokOynananUlke;
+		-- Fonksiyon varsa sil
+		DROP  vw_UyeOyunAnaliz;
 	END
 GO
 
-
-
--- oyunların hangi ülkede en çok oynandığını, o ülkeye ait oyuncu sayısını ve oyuncuların yaş gruplarını gösteren view
-CREATE VIEW viewEnÇokOynananUlke
-AS
+--Uyelerin ID, AD-SOYAD, sisteme son giriş tarihleri , oynadıkları oyunları ID , adı , oyunu kaç kez oynadıkları ve aç kez kazandıkları , kazanma yüzdeleri ve bu yüzdeye göre oyundaki başarı durumunu oluşturan view 
+CREATE VIEW vw_UyeOyunAnaliz AS
 SELECT 
-	o.OYUN_ID,
+    u.UYE_ID,
+    u.AD_Üye + ' ' + u.SOYAD_Üye AS Ad_Soyad,  -- Ad ve Soyadı birleştiriyoruz
+	CONVERT(DATE, u.Son_Giriş_Tarihi) AS Son_Giris_Tarihi,
+    o.OYUN_ID,
     o.OYUN_ASILAD,
-    COUNT(*) AS ToplamOyuncu,
-    CASE 
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 26 AND 35 THEN '26-35'
-        ELSE '35+'
-    END AS YasGrubu,
-    dbo.fncEnÇokOynananUlke(o.OYUN_ID) AS EnCokOynananUlke
-FROM 
-    tblKoleksiyon k
-INNER JOIN tbloyun o ON k.OYUN_ID = o.OYUN_ID
-INNER JOIN tblUye u ON k.UYE_ID = u.UYE_ID
-GROUP BY 
-	o.OYUN_ID,
-    o.OYUN_ASILAD,
-    CASE 
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 18 AND 25 THEN '18-25'
-        WHEN YEAR(GETDATE()) - YEAR(u.DOGUMTARIHI) BETWEEN 26 AND 35 THEN '26-35'
-        ELSE '35+'
-    END;
+    dbo.fn_ToplamOynananOyun(u.UYE_ID, o.OYUN_ID) AS Oyun_Oynama_Sayisi,  -- Oyunu kaç kez oynadı
+    -- Oyunu kaç kez kazandı
+    COUNT(CASE WHEN os.KAZANAN_UYE_ID = u.UYE_ID THEN 1 END) AS Kazanma_Sayisi,
 
+    -- Kazanma yüzdesi (eğer Oyun Oynama Sayısı sıfırsa 0 döner) ve % işareti eklenmiş hali
+    '%' + FORMAT((COUNT(CASE WHEN os.KAZANAN_UYE_ID = u.UYE_ID THEN 1 END) * 100.0) /
+			NULLIF(dbo.fn_ToplamOynananOyun(u.UYE_ID, o.OYUN_ID), 0),'N2') AS Kazanma_Yuzdesi,  -- Kazanma yüzdesini % işareti ve ',' sonra 2 basamak ile göstermek için
+    
+	-- Kazanma yüzdesine göre başarı durumu ekliyoruz
+    CASE
+        WHEN (COUNT(CASE WHEN os.KAZANAN_UYE_ID = u.UYE_ID THEN 1 END) * 100.0) / NULLIF(dbo.fn_ToplamOynananOyun(u.UYE_ID, o.OYUN_ID), 0) < 40 THEN 'Başarısız'
+        WHEN (COUNT(CASE WHEN os.KAZANAN_UYE_ID = u.UYE_ID THEN 1 END) * 100.0) / NULLIF(dbo.fn_ToplamOynananOyun(u.UYE_ID, o.OYUN_ID), 0) >= 40 AND 
+             (COUNT(CASE WHEN os.KAZANAN_UYE_ID = u.UYE_ID THEN 1 END) * 100.0) / NULLIF(dbo.fn_ToplamOynananOyun(u.UYE_ID, o.OYUN_ID), 0) < 70 THEN 'Orta Başarılı'
+        ELSE 'Başarılı'
+    END AS Basari_Durumu
+	FROM tblUye u
+		INNER JOIN tblOyun_seanslar os ON u.UYE_ID = os.OLUSTURAN_UYE_ID OR u.UYE_ID = os.KAZANAN_UYE_ID
+		INNER JOIN tbloyun o ON os.oyun_ID = o.OYUN_ID
+	GROUP BY 
+		  o.OYUN_ID, u.UYE_ID, o.OYUN_ASILAD, u.AD_Üye, u.SOYAD_Üye, u.Son_Giriş_Tarihi;
 GO
 
 
 
-
-
-
--- Test: View'ı kullanarak oyun türüne, tasarımcıya ve oyuncu yaş gruplarına göre veri çeken sorgu
 SELECT 
-	o.OYUN_ASILAD,
-    ec.YasGrubu,
-    ec.ToplamOyuncu,
-    ec.EnCokOynananUlke,
-    t.TASARIMCI_AD -- Tasarımcı adı
-FROM 
-    viewEnÇokOynananUlke ec
-INNER JOIN tbloyun o ON ec.OYUN_ASILAD = o.OYUN_ASILAD
-INNER JOIN tbloyuntasarimci ot ON o.OYUN_ID = ot.OYUN_ID -- Oyun ile tasarımcı arasındaki ilişkiyi ekledik
-INNER JOIN tblTasarimci t ON ot.TASARIMCI_ID = t.TASARIMCI_ID -- Tasarımcı bilgilerini alıyoruz
-INNER JOIN tbloyun_tur otr ON otr.OYUN_ID = o.OYUN_ID
-INNER JOIN tbltur tur ON tur.TUR_ID = otr.TUR_ID
-WHERE 
-    otr.TUR_ID = 1  -- Oyun türüne göre filtreleme
-ORDER BY 
-    o.OYUN_ASILAD, ec.ToplamOyuncu DESC;
+    a.UYE_ID,
+	a.Son_Giris_Tarihi,
+	U.Seviye,
+	a.Ad_Soyad,
+    a.OYUN_ID, 
+    a.OYUN_ASILAD,
+	t.TUR_AD,
+    a.Oyun_Oynama_Sayisi, 
+    a.Kazanma_Sayisi,
+	a.Kazanma_Yuzdesi,
+	a.Basari_Durumu
+FROM vw_UyeOyunAnaliz a
+	INNER JOIN tblUye U ON U.UYE_ID = A.UYE_ID
+	INNER JOIN tbloyun_tur ot ON ot.OYUN_ID = a.OYUN_ID
+	INNER JOIN tbltur t ON t.TUR_ID = ot.TUR_ID
+
