@@ -1,4 +1,13 @@
 
+--Böyle bir fonksiyon var ise önce siliyoruz
+IF OBJECT_ID ( 'fn_ToplamOynananOyun') IS NOT NULL
+	BEGIN
+		-- Fonksiyon varsa sil
+		DROP FUNCTION fn_ToplamOynananOyun;
+	END
+GO
+
+
 --Parametre olarak verilen uyenin ve oyunun kaç kez oynandığını döndüren fonksiyon(açıklama: toplam oynanan oyun sayısını oyun_seanlar tablosundaki olusturan_uye_ıd ve oyunu kazanan_ıd ile tespit ettik)
 CREATE FUNCTION fn_ToplamOynananOyun(@UYE_ID INT, @OYUN_ID INT)
 RETURNS INT
