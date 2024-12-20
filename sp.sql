@@ -1,56 +1,68 @@
-CREATE PROCEDURE RozetleriGuncelle
-    @BaslangicTarihi DATETIME,
-    @BitisTarihi DATETIME
+IF OBJECT_ID('sp_OyunEkleme') IS NOT NULL
+	BEGIN
+	    DROP PROCEDURE sp_OyunEkleme;
+	END
+GO
+
+
+
+CREATE PROCEDURE sp_OyunEkleme
+    @uyeId INT,
+    @oyunId INT
 AS
 BEGIN
-    -- Transaction başlatılıyor
     BEGIN TRANSACTION;
 
     BEGIN TRY
-        -- En çok takipçi kazanan kullanıcıyı bulma
-        DECLARE @EnCokTakipciKazanacakId INT;
-        SELECT TOP 1 @EnCokTakipciKazanacakId = KullaniciId
-        FROM tblTakipci
-        WHERE TakipTarihi BETWEEN @BaslangicTarihi AND @BitisTarihi
-        GROUP BY KullaniciId
-        ORDER BY COUNT(*) DESC;
+        -- Kullanıcı ve oyunun varlığını kontrol et
+        IF NOT EXISTS (SELECT 1 FROM tblUye WHERE UYE_ID = @uyeId)
+            THROW 50001, 'Geçersiz kullanıcı ID', 1;
 
-        -- En çok beğenilen kullanıcıyı bulma
-        DECLARE @EnCokBegeniAlanId INT;
-        SELECT TOP 1 @EnCokBegeniAlanId = KullaniciId
-        FROM tblBegeni
-        WHERE BegeniTarihi BETWEEN @BaslangicTarihi AND @BitisTarihi
-        GROUP BY KullaniciId
-        ORDER BY COUNT(*) DESC;
+        IF NOT EXISTS (SELECT 1 FROM tbloyun WHERE OYUN_ID = @oyunId)
+            THROW 50002, 'Geçersiz oyun ID', 1;
 
-        -- En çok takipçi kazanan kullanıcının rozetini silme
-        IF EXISTS (SELECT 1 FROM tblRozet WHERE KullaniciId = @EnCokTakipciKazanacakId AND RozetAd = 'En Çok Takipçi Kazanan')
-        BEGIN
-            DELETE FROM tblRozet WHERE KullaniciId = @EnCokTakipciKazanacakId AND RozetAd = 'En Çok Takipçi Kazanan';
-        END
+        -- Oyunun zaten koleksiyonda olup olmadığını kontrol et
+        IF EXISTS (SELECT 1 FROM tblKoleksiyon WHERE UYE_ID = @uyeId AND OYUN_ID = @oyunId)
+            THROW 50003, 'Oyun zaten koleksiyonda', 1;
 
-        -- En çok beğenilen kullanıcının rozetini silme
-        IF EXISTS (SELECT 1 FROM tblRozet WHERE KullaniciId = @EnCokBegeniAlanId AND RozetAd = 'En Çok Beğenilen')
-        BEGIN
-            DELETE FROM tblRozet WHERE KullaniciId = @EnCokBegeniAlanId AND RozetAd = 'En Çok Beğenilen';
-        END
+        -- Üyelik türünü ve koleksiyondaki oyun sayısını bul
+        DECLARE @kullanıcıTuru NVARCHAR(20);
+        DECLARE @sahipOlduguOyunSayısı INT;
 
-        -- En çok takipçi kazanan kullanıcıya rozet ekleme
-        INSERT INTO tblRozet (KullaniciId, RozetAd, RozetTarihi)
-        VALUES (@EnCokTakipciKazanacakId, 'En Çok Takipçi Kazanan', GETDATE());
+        SELECT @kullanıcıTuru = Kullanıcı_Türü
+        FROM tblUye
+        WHERE UYE_ID = @uyeId;
 
-        -- En çok beğenilen kullanıcıya rozet ekleme
-        INSERT INTO tblRozet (KullaniciId, RozetAd, RozetTarihi)
-        VALUES (@EnCokBegeniAlanId, 'En Çok Beğenilen', GETDATE());
+        SELECT @sahipOlduguOyunSayısı = COUNT(*)
+        FROM tblKoleksiyon
+        WHERE UYE_ID = @uyeId;
 
-        -- İşlemler başarılı olduğunda transaction commit ediliyor
+        -- kullanıcı türü ücretsizse ve 11. oyunu eklemek istiyorsa hata mesajı dönecek
+        IF @kullanıcıTuru = 'Ücretsiz' AND @sahipOlduguOyunSayısı >= 10
+            THROW 50004, 'Ücretsiz üyelik için koleksiyon sınırı 10 oyundur.', 1;
+
+        -- Oyunu koleksiyona ekle
+        INSERT INTO tblKoleksiyon (KOLEKSIYON_AD, ODENEN_UCRET, PARABIRIMI_ID, UYE_ID, OYUN_ID)
+		VALUES ('İstek Listesi', '0', 1, @uyeId, @oyunId);
+		
+
+        -- Kullanıcının koleksiyon güncelleme tarihini güncelle
+        UPDATE tblUye
+		SET Son_Profil_Güncelleme_Tarihi = CONVERT(VARCHAR(20), GETDATE(), 120)
+		WHERE UYE_ID = @uyeId;
+
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
-        -- Hata durumunda transaction geri alınıyor
-        ROLLBACK TRANSACTION;
+        -- Hata durumunda rollback yap
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
 
-        -- Hata mesajı döndürülüyor
-        THROW;
-    END CATCH
+        -- Hata bilgileri
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH;
 END;
