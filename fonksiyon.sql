@@ -1,44 +1,27 @@
-use boardgame
 
--- Fonksiyonun var olup olmadığını kontrol et
-IF OBJECT_ID ( 'fncEnÇokOynananUlke') IS NOT NULL
-	BEGIN
-		-- Fonksiyon varsa sil
-		DROP FUNCTION fncEnÇokOynananUlke;
-	END
-GO
-
--- Verilen OyunId parametresine göre bu oyunu en çok oynayan ülkeyi döndüren fonksiyon
--- Parametre olarak alınan OyunId'ye bağlı olarak 'Koleksiyonlar' ve 'Kullanicilar' tablolarındaki
--- kullanıcıların ülkelerini gruplar ve en fazla kullanıcıya sahip olan ülkeyi belirler.
-
-CREATE FUNCTION fncEnÇokOynananUlke(@OyunId INT)
-RETURNS VARCHAR(50)
+--Parametre olarak verilen uyenin ve oyunun kaç kez oynandığını döndüren fonksiyon(açıklama: toplam oynanan oyun sayısını oyun_seanlar tablosundaki olusturan_uye_ıd ve oyunu kazanan_ıd ile tespit ettik)
+CREATE FUNCTION fn_ToplamOynananOyun(@UYE_ID INT, @OYUN_ID INT)
+RETURNS INT
 AS
-	BEGIN
-		-- Fonksiyonda kullanılacak olan 'EnÇokOynananUlke' değişkenini tanımla
-		DECLARE @EnÇokOynananUlke VARCHAR(50)
+BEGIN
+    DECLARE @ToplamOyunSayisi INT;
 
-		-- 'Koleksiyonlar' tablosundaki verilen 'OyunId' için, her ülkenin kaç kez göründüğünü say
-		-- 'Kullanicilar' tablosuyla inner join yaparak, kullanıcıların ülkelerine göre grupla
-		-- En çok sayıda kullanıcıya sahip olan ülkeyi seçer ve 'EnÇokOynananUlke' değişkenine ata
-		SELECT TOP 1 
-			@EnÇokOynananUlke = u.ULKE_ID   -- Bu ülkeyi değişkene ata
-		FROM 
-			tblKoleksiyon k
-		INNER JOIN tblUye u ON k.UYE_ID = u.UYE_ID
-		WHERE 
-			k.OYUN_ID = @OyunId  -- Parametre olarak alınan oyun ID'si ile filtreleme yapılır
-		GROUP BY 
-			u.ULKE_ID  -- Ülkelere göre gruplanır
-		ORDER BY 
-			COUNT(*) DESC;  -- En fazla kullanıcıya sahip ülke önce gelir
+    -- Oyuncunun belirli bir oyunu kaç kez oynadığını hesaplayan sorgu
+    SELECT 
+        @ToplamOyunSayisi = COUNT(*) 
+    FROM 
+        tblOyun_seanslar OS
+    INNER JOIN 
+        tbloyun O ON O.OYUN_ID = OS.oyun_ID
+    WHERE 
+        OS.oyun_ID = @OYUN_ID 
+        AND (OS.OLUSTURAN_UYE_ID = @UYE_ID OR OS.KAZANAN_UYE_ID = @UYE_ID);
 
-		-- Hesaplanan en çok oynanan ülke geri döndür
-		RETURN @EnÇokOynananUlke;
-	END
+    -- Hesaplanan toplam oyun sayısını döndürüyoruz
+    RETURN @ToplamOyunSayisi;
+END
 GO
 
+--15 ID numaralı uye 1 ID numaralı oyunu kaç kez oynamıştır.
+SELECT dbo.fn_ToplamOynananOyun(15,1) AS toplamoyunsayısı;
 
--- OyunID'si 1 olan oyununun en çok hangi ülkede oynandığını bulan sorgu
-SELECT dbo.fncEnÇokOynananUlke(1) AS EnCokOynananUlke;
