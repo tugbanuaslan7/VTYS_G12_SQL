@@ -1,5 +1,5 @@
 CREATE DATABASE Game1
-
+/* tek bir sıkınntı var create rozet tablosuna uye_ıd eklenecek ve uye_sahiptir_rozet tablosu silincek*/
 USE Game1;
 GO
 
