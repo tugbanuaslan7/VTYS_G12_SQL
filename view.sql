@@ -1,9 +1,10 @@
 
+
 -- View ın önceden var olup olmadığını kontrol ediyoruz 
 IF OBJECT_ID ( 'vw_UyeOyunAnaliz') IS NOT NULL
 	BEGIN
-		-- Fonksiyon varsa sil
-		DROP  vw_UyeOyunAnaliz;
+		-- view varsa sil
+		DROP VIEW vw_UyeOyunAnaliz;
 	END
 GO
 
@@ -55,4 +56,3 @@ FROM vw_UyeOyunAnaliz a
 	INNER JOIN tblUye U ON U.UYE_ID = A.UYE_ID
 	INNER JOIN tbloyun_tur ot ON ot.OYUN_ID = a.OYUN_ID
 	INNER JOIN tbltur t ON t.TUR_ID = ot.TUR_ID
-
