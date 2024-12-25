@@ -1,4 +1,7 @@
-use boardgame
+use BOARDGAMEARCHIEVE
+
+use BOARDGAMEARCHIEVE
+
 
 -- tbloyun tablosuna veri ekleme
 INSERT INTO tbloyun 
@@ -339,40 +342,55 @@ INSERT INTO tblDil_bagimliligi_oylamasi (OY_BAZI_METINLER_ICIN_GEREKLI, OY_ORTA_
 
 
 
- INSERT INTO tblUye         //değişecekkk kullanıc türü 
+ INSERT INTO tblUye 
 (AD_Üye, SOYAD_Üye, Cinsiyet, DOGUMTARIHI, E_mail, Şifre, Durum, Kayıt_Tarihi, Açıklama, Kullanıcı_Türü, 
  Seviye, Son_Giriş_Tarihi, Takip_Eden_Kullanıcı_Sayısı, Beğenen_Kullanıcı_Sayısı, Beğenilen_Kullanıcı_Sayısı, 
  Profil_Bağlantısı, Son_Profil_Güncelleme_Tarihi, ULKE_ID, IL_ID, ILCE_ID, OYUNCU_SAYISI_OYLAMASI_ID, 
  YAS_OYLAMASI_ID, KARMASIKLIK_OYLAMASI_ID, DIL_BAGIMLILIGI_ID)
 
 VALUES
- ('Aleyna', 'Erkul', 'K', '2003-01-23', 'aleyna.erkul@example.com', 'dahadagucluuuuuSifre!', 'Aktif', '2023-12-15', 
+
+ ('Muhammet', 'Tekin', 'E', '1989-12-25', 'muhammet.tekin@example.com', 'B1gSecureKey!', 'Ücretli', '2023-11-30', 
+ 'Aksiyon ve macera oyunlarına ilgi duyar.', 'Action-Adventure', 20, '2024-12-20', 400, 180, 150, 
+ 'https://profile.example.com/muhammettekin', '2024-04-01', 1, 34, 5, 3, 3, 2, 4),
+
+ ('Aleyna', 'Erkul', 'K', '2003-01-23', 'aleyna.erkul@example.com', 'dahadagucluuuuuSifre!', 'Ücretli', '2023-12-15', 
  'Strateji oyunlarına ilgi duyar.', 'Casual', 8, '2024-12-08', 500, 120, 100, 
  'https://profile.example.com/aleyaley', '2024-01-06', 1, 34, 2, 4, 3, 5, 2),
 
-
-  ('Tuğba', 'Aslan', 'K', '2002-07-02', 'tuğba.aslann@example.com', 'dahadahadahagucluSifre!', 'Aktif', '2023-12-15', 
+  
+  ('Tuğba Nur', 'Aslan', 'K', '2002-07-02', 'tuğba.aslann@example.com', 'dahadahadahagucluSifre!', 'Ücretli', '2023-12-15', 
  'aksiyon oyunlarına ilgi duyar.', 'Casual', 9, '2024-12-08', 600, 120, 120, 
  'https://profile.example.com/tuba', '2024-08-06', 1, 34, 2, 2, 5, 5, 2),
 
-('Ahmet', 'Yılmaz', 'E', '1995-03-15', 'ahmet.yilmaz@example.com', 'sifre123', 'Aktif', '2024-01-01', 
+ 
+  ('Esma Nur', 'Aksoy', 'K', '2002-06-11', 'esmanur.aksoy@example.com', 'gucluSifre2024!', 'Ücretli', '2023-12-20', 
+ 'RPG oyunlarına ilgi duyar.', 'RPG', 7, '2024-12-10', 300, 150, 130, 
+ 'https://profile.example.com/esmanuraksoy', '2024-02-01', 1, 33, 3, 4, 2, 3, 5),
+
+ ('Zeynep', 'Tatar', 'K', '2003-06-24', 'zeynep.tatar@example.com', 'SuperGuv3nlik!', 'Ücretsiz', '2023-12-25', 
+ 'Bulmaca oyunlarını sever.', 'Puzzle', 6, '2024-12-15', 100, 90, 85, 
+ 'https://profile.example.com/zeyneptatar', '2024-03-01', 1, 37, 4, 2, 1, 4, 3),
+
+
+('Ahmet', 'Yılmaz', 'E', '1995-03-15', 'ahmet.yilmaz@example.com', 'sifre123', 'Ücretsiz', '2024-01-01', 
  'Sık oyun oynar.', 'Gamer', 10, '2024-01-10', 250, 200, 180, 
  'https://profile.example.com/ahmetyilmaz', '2024-01-05', 1, 34, 2, 3, 2, 4, 1),
 
- ('Elif', 'Demir', 'K', '1988-07-20', 'elif.demir@example.com', 'gucluSifre!', 'Aktif', '2023-12-15', 
+ ('Elif', 'Demir', 'K', '1988-07-20', 'elif.demir@example.com', 'gucluSifre!', 'Ücretsiz', '2023-12-15', 
  'Strateji oyunlarına ilgi duyar.', 'Casual', 8, '2024-01-08', 150, 120, 100, 
  'https://profile.example.com/elifdemir', '2024-01-06', 1, 34, 2, 2, 3, 5, 2),
 
- ('Mehmet', 'Çelik', 'E', '2002-11-10', 'mehmet.celik@example.com', '12345Abc', 'Pasif', '2023-11-20', 
+ ('Mehmet', 'Çelik', 'E', '2002-11-10', 'mehmet.celik@example.com', '12345Abc', 'Ücretli', '2023-11-20', 
  'Yeni oyunları dener.', 'Tester', 5, '2024-01-03', 50, 40, 35, 
  'https://profile.example.com/mehmetcelik', '2024-01-02', 1, 35, 4, 1, 1, 2, 3),
 
 
- ('Ayşe', 'Kaya', 'K', '1990-02-14', 'ayse.kaya@example.com', '!SuperPass22', 'Aktif', '2023-12-10', 
+ ('Ayşe', 'Kaya', 'K', '1990-02-14', 'ayse.kaya@example.com', '!SuperPass22', 'Ücretsiz', '2023-12-10', 
  'Aile oyunlarını sever.', 'Family', 6, '2024-01-09', 120, 110, 95, 
  'https://profile.example.com/aysekaya', '2024-01-07', 1, 36, 1, 4, 5, 3, 4),
 
- ('Fatih', 'Ak', 'E', '1985-06-30', 'fatih.ak@example.com', 'Passw0rd*', 'Pasif', '2023-12-05', 
+ ('Fatih', 'Ak', 'E', '1985-06-30', 'fatih.ak@example.com', 'Passw0rd*', 'Ücretsiz', '2023-12-05', 
  'Yarış oyunlarına meraklı.', 'Competitive', 9, '2024-01-04', 180, 160, 140, 
  'https://profile.example.com/fatihak', '2024-01-06', 1, 16, 5, 5, 4, 4, 1);
 
@@ -381,84 +399,126 @@ VALUES
 
 
 
+
+
+
 -- tblOyun_seanslar tablosuna veri ekleme (güncellenmiş)
-INSERT INTO tblOyun_seanslar (aciklama, baslangic_tarihi, bitis_tarihi, OLUSTURAN_UYE_ID, KAZANAN_UYE_ID, oyun_ID) VALUES    // değişecek 
-('Oyun 5 Seansı', '2024-12-04 03:00:00', '2024-12-04 03:20:00', 14, 3, 4),
-('Oyun 1 Seansı', '2024-12-01 10:00:00', '2024-12-01 10:40:00', 3, 10, 1),
-('Oyun 2 Seansı', '2024-12-01 12:00:00', '2024-12-01 12:40:00', 10, 11, 2),
-('Oyun 3 Seansı', '2024-12-01 14:00:00', '2024-12-01 14:50:00', 11, 13, 3),
-('Oyun 4 Seansı', '2024-12-01 16:00:00', '2024-12-01 16:40:00', 12, 14, 4),
-('Oyun 5 Seansı', '2024-12-01 18:00:00', '2024-12-01 18:30:00', 13, 14, 5),
-('Oyun 1 Seansı', '2024-12-01 20:00:00', '2024-12-01 20:40:00', 14, 15, 1),
-('Oyun 2 Seansı', '2024-12-01 22:00:00', '2024-12-01 22:50:00', 15, 13, 2),
-('Oyun 3 Seansı', '2024-12-02 01:00:00', '2024-12-02 01:30:00', 10, 14, 3),
-('Oyun 4 Seansı', '2024-12-02 03:00:00', '2024-12-02 03:40:00', 11, 3, 4),
-('Oyun 5 Seansı', '2024-12-02 05:00:00', '2024-12-02 05:50:00', 12, 10, 5),
-('Oyun 1 Seansı', '2024-12-02 07:00:00', '2024-12-02 07:40:00', 13, 15, 1),
-('Oyun 2 Seansı', '2024-12-02 09:00:00', '2024-12-02 09:30:00', 14, 3, 2),
-('Oyun 3 Seansı', '2024-12-02 11:00:00', '2024-12-02 11:40:00', 15, 11, 3),
-('Oyun 4 Seansı', '2024-12-02 13:00:00', '2024-12-02 13:50:00', 3, 14, 4),
-('Oyun 5 Seansı', '2024-12-02 15:00:00', '2024-12-02 15:40:00', 10, 15, 5),
-('Oyun 1 Seansı', '2024-12-02 17:00:00', '2024-12-02 17:40:00', 11, 3, 1),
-('Oyun 2 Seansı', '2024-12-02 19:00:00', '2024-12-02 19:30:00', 12, 10, 2),
-('Oyun 3 Seansı', '2024-12-02 21:00:00', '2024-12-02 21:50:00', 13, 15, 3),
-('Oyun 4 Seansı', '2024-12-02 23:00:00', '2024-12-02 23:40:00', 14, 11, 4),
-('Oyun 5 Seansı', '2024-12-03 01:00:00', '2024-12-03 01:30:00', 15, 14, 5),
-('Oyun 1 Seansı', '2024-12-03 03:00:00', '2024-12-03 03:40:00', 3, 10, 1),
-('Oyun 2 Seansı', '2024-12-03 05:00:00', '2024-12-03 05:50:00', 10, 11, 2),
-('Oyun 3 Seansı', '2024-12-03 07:00:00', '2024-12-03 07:40:00', 11, 13, 3),
-('Oyun 4 Seansı', '2024-12-03 09:00:00', '2024-12-03 09:30:00', 12, 15, 4),
-('Oyun 5 Seansı', '2024-12-03 11:00:00', '2024-12-03 11:40:00', 13, 3, 5),
-('Oyun 1 Seansı', '2024-12-03 13:00:00', '2024-12-03 13:40:00', 14, 10, 1),
-('Oyun 2 Seansı', '2024-12-03 15:00:00', '2024-12-03 15:50:00', 15, 13, 2),
-('Oyun 3 Seansı', '2024-12-03 17:00:00', '2024-12-03 17:40:00', 3, 14, 3),
-('Oyun 4 Seansı', '2024-12-03 19:00:00', '2024-12-03 19:30:00', 10, 15, 4),
-('Oyun 5 Seansı', '2024-12-03 21:00:00', '2024-12-03 21:50:00', 11, 13, 5),
-('Oyun 1 Seansı', '2024-12-03 23:00:00', '2024-12-03 23:40:00', 12, 14, 1),
-('Oyun 2 Seansı', '2024-12-04 01:00:00', '2024-12-04 01:40:00', 13, 3, 2),
-('Oyun 3 Seansı', '2024-12-04 03:00:00', '2024-12-04 03:30:00', 14, 10, 3),
-('Oyun 4 Seansı', '2024-12-04 05:00:00', '2024-12-04 05:50:00', 15, 11, 4),
-('Oyun 5 Seansı', '2024-12-04 07:00:00', '2024-12-04 07:40:00', 3, 14, 5);
+INSERT INTO tblOyun_seanslar (aciklama, baslangic_tarihi, bitis_tarihi, OLUSTURAN_UYE_ID, KAZANAN_UYE_ID, oyun_ID) VALUES
+('Oyun 1 Seansı', '2024-12-01 10:00:00', '2024-12-01 10:40:00', 6, 8, 1),
+('Oyun 2 Seansı', '2024-12-01 12:00:00', '2024-12-01 12:40:00', 10, 1, 2),
+('Oyun 3 Seansı', '2024-12-01 14:00:00', '2024-12-01 14:50:00', 1, 1, 13),
+('Oyun 4 Seansı', '2024-12-01 16:00:00', '2024-12-01 16:40:00', 2, 1, 4),
+('Oyun 5 Seansı', '2024-12-01 18:00:00', '2024-12-01 18:30:00', 10, 4, 5),
+('Oyun 6 Seansı', '2024-12-05 08:00:00', '2024-12-05 08:30:00', 5, 8, 10),
+('Oyun 7 Seansı', '2024-12-05 10:00:00', '2024-12-05 10:40:00', 4, 10, 7),
+('Oyun 8 Seansı', '2024-12-05 12:00:00', '2024-12-05 12:20:00', 6, 6, 3),
+('Oyun 9 Seansı', '2024-12-05 14:00:00', '2024-12-05 14:30:00', 2, 7, 19),
+('Oyun 10 Seansı', '2024-12-05 16:00:00', '2024-12-05 16:50:00', 3, 9, 22),
+('Oyun 11 Seansı', '2024-12-05 18:00:00', '2024-12-05 18:40:00', 1, 4, 8),
+('Oyun 12 Seansı', '2024-12-05 20:00:00', '2024-12-05 20:20:00', 9, 10, 14),
+('Oyun 13 Seansı', '2024-12-05 22:00:00', '2024-12-05 22:40:00', 10, 1, 5),
+('Oyun 14 Seansı', '2024-12-06 01:00:00', '2024-12-06 01:30:00', 8, 6, 11),
+('Oyun 15 Seansı', '2024-12-06 03:00:00', '2024-12-06 03:40:00', 5, 2, 21),
+('Oyun 16 Seansı', '2024-12-06 05:00:00', '2024-12-06 05:20:00', 6, 6, 4),
+('Oyun 17 Seansı', '2024-12-06 07:00:00', '2024-12-06 07:50:00', 7, 5, 13),
+('Oyun 18 Seansı', '2024-12-06 09:00:00', '2024-12-06 09:30:00', 3, 8, 9),
+('Oyun 19 Seansı', '2024-12-06 11:00:00', '2024-12-06 11:40:00', 10, 2, 17),
+('Oyun 20 Seansı', '2024-12-06 13:00:00', '2024-12-06 13:30:00', 4, 9, 6),
+('Oyun 21 Seansı', '2024-12-06 15:00:00', '2024-12-06 15:40:00', 2, 7, 1),
+('Oyun 22 Seansı', '2024-12-06 17:00:00', '2024-12-06 17:50:00', 8, 3, 20),
+('Oyun 23 Seansı', '2024-12-06 19:00:00', '2024-12-06 19:30:00', 9, 10, 18),
+('Oyun 24 Seansı', '2024-12-06 21:00:00', '2024-12-06 21:40:00', 7, 8, 15),
+('Oyun 25 Seansı', '2024-12-06 23:00:00', '2024-12-06 23:30:00', 1, 5, 3),
+('Oyun 26 Seansı', '2024-12-07 01:00:00', '2024-12-07 01:30:00', 6, 1, 16),
+('Oyun 27 Seansı', '2024-12-07 03:00:00', '2024-12-07 03:40:00', 4, 6, 8),
+('Oyun 28 Seansı', '2024-12-07 05:00:00', '2024-12-07 05:20:00', 10, 7, 2),
+('Oyun 29 Seansı', '2024-12-07 07:00:00', '2024-12-07 07:50:00', 8, 4, 12),
+('Oyun 30 Seansı', '2024-12-07 09:00:00', '2024-12-07 09:30:00', 5, 9, 14),
+('Oyun 31 Seansı', '2024-12-07 11:00:00', '2024-12-07 11:40:00', 7, 3, 19),
+('Oyun 32 Seansı', '2024-12-07 13:00:00', '2024-12-07 13:50:00', 2, 8, 22),
+('Oyun 33 Seansı', '2024-12-07 15:00:00', '2024-12-07 15:40:00', 9, 5, 11),
+('Oyun 34 Seansı', '2024-12-07 17:00:00', '2024-12-07 17:20:00', 1, 4, 6),
+('Oyun 35 Seansı', '2024-12-07 19:00:00', '2024-12-07 19:30:00', 4, 1, 7),
+('Oyun 36 Seansı', '2024-12-07 21:00:00', '2024-12-07 21:40:00', 10, 9, 5),
+('Oyun 37 Seansı', '2024-12-07 23:00:00', '2024-12-07 23:50:00', 6, 8, 17),
+('Oyun 38 Seansı', '2024-12-08 01:00:00', '2024-12-08 01:30:00', 3, 7, 18),
+('Oyun 39 Seansı', '2024-12-08 03:00:00', '2024-12-08 03:40:00', 8, 2, 20),
+('Oyun 40 Seansı', '2024-12-08 05:00:00', '2024-12-08 05:20:00', 5, 6, 13),
+('Oyun 41 Seansı', '2024-12-08 07:00:00', '2024-12-08 07:30:00', 1, 10, 4),
+('Oyun 42 Seansı', '2024-12-08 09:00:00', '2024-12-08 09:20:00', 2, 4, 9),
+('Oyun 43 Seansı', '2024-12-08 11:00:00', '2024-12-08 11:40:00', 7, 3, 1),
+('Oyun 44 Seansı', '2024-12-08 13:00:00', '2024-12-08 13:50:00', 9, 6, 22),
+('Oyun 45 Seansı', '2024-12-08 15:00:00', '2024-12-08 15:40:00', 10, 7, 19),
+('Oyun 46 Seansı', '2024-12-08 17:00:00', '2024-12-08 17:30:00', 3, 1, 11),
+('Oyun 47 Seansı', '2024-12-05 14:00:00', '2024-12-05 14:40:00', 2, 5, 12),
+('Oyun 48 Seansı', '2024-12-05 16:00:00', '2024-12-05 16:30:00', 10, 4, 16),
+('Oyun 49 Seansı', '2024-12-05 18:00:00', '2024-12-05 18:50:00', 6, 10, 9),
+('Oyun 50 Seansı', '2024-12-05 20:00:00', '2024-12-05 20:30:00', 9, 9, 20),
+('Oyun 51 Seansı', '2024-12-05 22:00:00', '2024-12-05 22:40:00', 4, 2, 14),
+('Oyun 52 Seansı', '2024-12-06 01:00:00', '2024-12-06 01:30:00', 3, 6, 5),
+('Oyun 53 Seansı', '2024-12-06 03:00:00', '2024-12-06 03:40:00', 8, 1, 19),
+('Oyun 54 Seansı', '2024-12-06 05:00:00', '2024-12-06 05:20:00', 5, 5, 7);
 
 
 
 
-INSERT INTO tbluye_oyun_oynar (UYE_ID, OYUNSEANS_ID) VALUES  //değişiecek 
-(3, 2),
-(10, 3),
-(11, 4),
-(12, 5),
-(13, 6),
-(14, 7),
-(15, 8),
-(3, 9),
-(10, 10),
-(11, 11),
-(12, 12),
-(13, 13),
-(14, 14),
-(15, 15),
-(3, 16),
-(10, 17),
-(11, 18),
-(12, 19),
-(13, 20),
-(14, 21),
-(15, 22),
-(3, 23),
-(10, 24),
-(11, 25),
-(12, 26),
-(13, 27),
-(14, 28),
-(15, 29),
-(3, 30),
-(10, 31),
-(11, 32),
-(12, 33),
-(13, 34),
-(14, 35),
-(15, 36);
+
+INSERT INTO tbluye_oyun_oynar (UYE_ID, OYUNSEANS_ID) VALUES
+(6, 1),
+(10, 2),
+(1, 3),
+(2, 4),
+(10, 5),
+(5, 6),
+(4, 7),
+(6, 8),
+(2, 9),
+(3, 10),
+(1, 11),
+(9, 12),
+(10, 13),
+(8, 14),
+(5, 15),
+(6, 16),
+(7, 17),
+(3, 18),
+(10, 19),
+(4, 20),
+(2, 21),
+(8, 22),
+(9, 23),
+(7, 24),
+(1, 25),
+(6, 26),
+(4, 27),
+(10, 28),
+(8, 29),
+(5, 30),
+(7, 31),
+(2, 32),
+(9, 33),
+(1, 34),
+(4, 35),
+(10, 36),
+(6, 37),
+(3, 38),
+(8, 39),
+(5, 40),
+(1, 41),
+(2, 42),
+(7, 43),
+(9, 44),
+(10, 45),
+(3, 46),
+(2, 47),
+(10, 48),
+(6, 49),
+(9, 50),
+(4, 51),
+(3, 52),
+(8, 53),
+(5, 54);
+
 
 INSERT INTO tbltur (TUR_AD) VALUES 
 ('Strateji'), 
@@ -484,10 +544,25 @@ VALUES
 
 
 
-
-IF OBJECT_ID ( 'fncEnCokVakitGecirilenOyun') IS NOT NULL
-	BEGIN
-		-- Fonksiyon varsa sil
-		DROP FUNCTION fncEnCokVakitGecirilenOyun;
-	END
-GO
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (1, 8);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (2, 5);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (3, 5);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (4, 6);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (5, 4);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (6, 3);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (7, 5);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (8, 7);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (9, 6);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (10, 5);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (11, 7);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (12, 6);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (13, 8);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (14, 2);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (15, 6);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (16, 3);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (17, 3);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (18, 6);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (19, 2);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (20, 1);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (21, 2);
+INSERT INTO [BOARDGAMEARCHIEVE].[dbo].[tbloyun_tur] ([OYUN_ID], [TUR_ID]) VALUES (22, 4);
