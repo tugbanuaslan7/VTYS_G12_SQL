@@ -1,3 +1,5 @@
+
+
 IF OBJECT_ID('trg_KoleksiyonRozetVeProfilGuncelleme') IS NOT NULL
 	BEGIN
 	    DROP TRIGGER trg_KoleksiyonRozetVeProfilGuncelleme;
@@ -35,7 +37,7 @@ BEGIN
         WHERE UYE_ID = @uyeId;
 
         -- Kullanıcının oyun sayısına göre işlem kontrolü
-        IF @toplamOyunSayisi > 14
+        IF @toplamOyunSayisi > 15
             THROW 50008, 'Koleksiyona eklenen maksimum oyun sınırı aşıldı. İşlem iptal edildi.', 1;
 
         -- Eski rozetleri sil
@@ -46,7 +48,7 @@ BEGIN
         IF @toplamOyunSayisi >= 12
             INSERT INTO tblRozet (ROZET_AD, UYE_ID)
             VALUES ('Efsane Koleksiyoncu', @uyeId);
-        ELSE IF @toplamOyunSayisi >= 4
+        ELSE IF @toplamOyunSayisi >= 6
             INSERT INTO tblRozet (ROZET_AD, UYE_ID)
             VALUES ('Usta Koleksiyoncu', @uyeId);
         ELSE IF @toplamOyunSayisi >= 3
@@ -67,7 +69,7 @@ BEGIN
             VALUES (@uyeId, @toplamOyunSayisi, GETDATE());
         END;
 
-        -- İşlemleri tamamla
+        
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
@@ -80,5 +82,110 @@ BEGIN
         RAISERROR(@ErrorMessage, 16, 1);
     END CATCH;
 END;
+
+
+
+
+
+
+-- Sonuçları kontrol et
+SELECT * FROM tblRozet; -- Rozet eklendi mi? 
+SELECT * FROM tblProfilGuncelleme; -- Profil güncellendi mi?
+
+
+
+--- ID si 3 olan oyuncuya 4 oyun eklendi.
+BEGIN TRY
+    DECLARE @i INT = 1;
+    WHILE @i <= 4
+    BEGIN
+        EXEC sp_OyunEkleme @uyeId = 3, @oyunId = @i;
+        SET @i = @i + 1;
+    END
+END TRY
+BEGIN CATCH
+    SELECT ERROR_MESSAGE() AS HataMesaji;
+END CATCH;
+
+
+-- Uye Id'si 3 olan oyuncuya Amatör Koleksiyoncu Rozeti ekelenmeli.
+SELECT * FROM tblRozet; -- Rozet eklendi mi? 
+SELECT * FROM tblProfilGuncelleme; -- Profil güncellendi mi?
+
+
+
+
+--- ID si 4 olan oyuncuya 7 oyun eklendi.
+BEGIN TRY
+    DECLARE @i INT = 1;
+    WHILE @i <= 7
+    BEGIN
+        EXEC sp_OyunEkleme @uyeId = 2, @oyunId = @i;
+        SET @i = @i + 1;
+    END
+END TRY
+BEGIN CATCH
+    SELECT ERROR_MESSAGE() AS HataMesaji;
+END CATCH;
+
+
+
+
+-- Uye Id'si 4 olan oyuncuya Usta Koleksiyoncu Rozeti ekelenmeli.
+SELECT * FROM tblRozet; -- Rozet eklendi mi? 
+SELECT * FROM tblProfilGuncelleme; -- Profil güncellendi mi?
+
+
+
+--- ID si 8 olan oyuncuya 12 oyun eklendi.
+BEGIN TRY
+    DECLARE @i INT = 1;
+    WHILE @i <= 12
+    BEGIN
+        EXEC sp_OyunEkleme @uyeId = 2, @oyunId = @i;
+        SET @i = @i + 1;
+    END
+END TRY
+BEGIN CATCH
+    SELECT ERROR_MESSAGE() AS HataMesaji;
+END CATCH;
+
+
+-- Uye Id'si 8 olan oyuncuya Efsane Koleksiyoncu Rozeti ekelenmeli.
+SELECT * FROM tblRozet; -- Rozet eklendi mi? 
+SELECT * FROM tblProfilGuncelleme; -- Profil güncellendi mi?
+
+
+
+
+
+
+-- Koleksiyona eklenebilcek maksimum oyun sayısı aşıldı. Hata mesajı geldi mi?
+BEGIN TRY
+    DECLARE @i INT = 1;
+    WHILE @i <= 20
+    BEGIN
+        EXEC sp_OyunEkleme @uyeId =9, @oyunId = @i;
+        SET @i = @i + 1;
+    END
+END TRY
+BEGIN CATCH
+    SELECT ERROR_MESSAGE() AS HataMesaji;
+END CATCH;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
