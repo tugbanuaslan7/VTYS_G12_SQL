@@ -1,10 +1,12 @@
+
+
+use BOARDGAMEARCHIEVE
+
 IF OBJECT_ID('sp_OyunEkleme') IS NOT NULL
 	BEGIN
 	    DROP PROCEDURE sp_OyunEkleme;
 	END
 GO
-
-
 
 CREATE PROCEDURE sp_OyunEkleme
     @uyeId INT,
@@ -66,3 +68,43 @@ BEGIN
         RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH;
 END;
+
+
+-- 1 ID'li kullanıcının koleksiyonuna 5 ID'li oyunu ekledik
+DECLARE @x INT = 1; -- Kullanıcı ID'si
+DECLARE @y INT = 5; -- Oyun ID'si
+
+EXEC sp_OyunEkleme @uyeId = @x, @oyunId = @y;
+
+
+SELECT * FROM tblKoleksiyon
+WHERE UYE_ID = 1
+
+
+
+
+
+-- geçersiz kullanıcı ekleme
+DECLARE @x INT = 999; -- Kullanıcı ID'si
+DECLARE @y INT = 5; -- Oyun ID'si
+
+EXEC sp_OyunEkleme @uyeId = @x, @oyunId = @y;
+
+
+
+
+-- geçersiz oyun ekleme
+DECLARE @x INT = 1; -- Kullanıcı ID'si
+DECLARE @y INT = 25; -- Oyun ID'si
+
+EXEC sp_OyunEkleme @uyeId = @x, @oyunId = @y;
+
+
+
+-- oyunu ikinci kez eklemeye
+DECLARE @x INT = 1; -- Kullanıcı ID'si
+DECLARE @y INT = 5; -- Oyun ID'si
+
+EXEC sp_OyunEkleme @uyeId = @x, @oyunId = @y;
+
+
