@@ -1,6 +1,3 @@
-use BOARDGAMEARCHIEVE
-
-use BOARDGAMEARCHIEVE
 
 
 -- tbloyun tablosuna veri ekleme
