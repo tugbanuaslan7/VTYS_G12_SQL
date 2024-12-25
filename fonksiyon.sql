@@ -1,4 +1,3 @@
-
 --Böyle bir fonksiyon var ise önce siliyoruz
 IF OBJECT_ID ( 'fn_ToplamOynananOyun') IS NOT NULL
 	BEGIN
@@ -31,6 +30,5 @@ BEGIN
 END
 GO
 
---15 ID numaralı uye 1 ID numaralı oyunu kaç kez oynamıştır.
-SELECT dbo.fn_ToplamOynananOyun(15,1) AS toplamoyunsayısı;
-
+-- 1 ID numaralı uye 13 ID numaralı oyunu kaç kez oynamıştır.
+SELECT dbo.fn_ToplamOynananOyun(1,13) AS toplamoyunsayısı;
