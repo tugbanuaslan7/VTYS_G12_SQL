@@ -112,7 +112,7 @@ BEGIN TRY
     DECLARE @i INT = 1;
     WHILE @i <= 7
     BEGIN
-        EXEC sp_OyunEkleme @uyeId = 2, @oyunId = @i;
+        EXEC sp_OyunEkleme @uyeId = 4, @oyunId = @i;
         SET @i = @i + 1;
     END
 END TRY
